@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dubai Tarawih Imam Tracker</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Dubai Tarawih Imam Tracker</h1>
+            <p>Find Imams and their recitations during Ramadan 1446H</p>
+        </header>
+        
+        <div class="intro">
+            <div class="islamic-pattern"></div>
+            <p>Assalamu Alaikum and Ramadan Kareem! This community-driven resource helps you find Imams leading tarawih prayers across Dubai. Listen to recitation samples and locate mosques on the map.</p>
+        </div>
+        
+        <h2>Mosque Locations</h2>
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+        
+        <h2>Featured Imams</h2>
+        <div class="imams-container" id="imams-list">
+            <!-- Imam cards will be dynamically added here -->
+        </div>
+        
+        <h2>Contribute</h2>
+        <div class="contribute-section">
+            <p>Help us expand this resource by contributing information about Imams and their tarawih locations.</p>
+            <form id="contribute-form">
+                <div class="form-group">
+                    <label for="imam-name">Imam Name</label>
+                    <input type="text" id="imam-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="mosque-name">Mosque Name</label>
+                    <input type="text" id="mosque-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="location">Location/Address</label>
+                    <input type="text" id="location" required>
+                </div>
+                <div class="form-group">
+                    <label for="coordinates">Coordinates (if known)</label>
+                    <input type="text" id="coordinates" placeholder="e.g., 25.2048, 55.2708">
+                </div>
+                <div class="form-group">
+                    <label for="audio-file">Recitation Sample (audio file)</label>
+                    <input type="file" id="audio-file" accept="audio/*">
+                </div>
+                <div class="form-group">
+                    <label for="additional-info">Additional Information</label>
+                    <textarea id="additional-info" placeholder="Tarawih timings, special notes, etc."></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="contact">Your Contact Information (optional)</label>
+                    <input type="text" id="contact" placeholder="Email or phone number">
+                </div>
+                <button type="submit" class="submit-btn">Submit Information</button>
+            </form>
+        </div>
+        
+        <footer>
+            <p>2025 Dubai Tarawih Imam Tracker | Ramadan 1446H</p>
+            <p>This is a community-driven project to help Muslims find beautiful recitations during the blessed month.</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
