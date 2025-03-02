@@ -5,7 +5,7 @@ const imamsData = [
         name: "Sheikh Ahmed Al-Maqdisi",
         mosque: "Masjid Al Khabeesi",
         location: "Murraqabat, Deira, Dubai",
-        coordinates: [25.2661163, 55.3277214],
+        coordinates: {lat:25.2661163, lng:55.3277214},
         audioSample: "https://pub-fa6e49baf5604d6099352063a7441391.r2.dev/masjid_al_khabeesi.mp3",
         additionalInfo: "Tarawih starts 25 minutes after Isha Adhan."
     },
@@ -14,7 +14,7 @@ const imamsData = [
         name: "Sheikh Fatih Seferagic",
         mosque: "Masjid Al Joud",
         location: "MBR city District 1, Dubai",
-        coordinates: [25.1637818, 55.2739523],
+        coordinates: {lat:25.1637818, lng:55.2739523},
         audioSample: "https://pub-fa6e49baf5604d6099352063a7441391.r2.dev/fatih_seferagic.mp3", 
         additionalInfo: "Fatih Seferagic is a Bosnian-American Qari and social media influencer known for his exceptional recitation of the Quran."
     },
@@ -29,32 +29,68 @@ const imamsData = [
     // }
 ];
 
-// Initialize the map centered on Dubai
+// Map and markers variables
 let map;
+let markers = [];
+let infoWindow;
 
-// Function to initialize the map
+// Function to initialize the map (called by the Google Maps API script)
 function initMap() {
-    map = L.map('map').setView([25.2048, 55.2708], 11);
+    // Create map centered on Dubai
+    map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 25.2048, lng: 55.2708 },
+        zoom: 11,
+        styles: [
+            {
+                "featureType": "poi.business",
+                "stylers": [{ "visibility": "off" }]
+            },
+            {
+                "featureType": "water",
+                "elementType": "geometry.fill",
+                "stylers": [{ "color": "#c8d7d4" }]
+            },
+            {
+                "featureType": "landscape",
+                "elementType": "geometry.fill",
+                "stylers": [{ "color": "#f8f0e3" }]
+            }
+        ]
+    });
     
-    // Add OpenStreetMap tiles
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(map);
+    // Create a single info window that will be reused
+    infoWindow = new google.maps.InfoWindow();
+    
+    // Add markers once the map is ready
+    addMarkersToMap();
+    
+    // Create Imam cards and set up event listeners
+    createImamCards();
+    setupEventListeners();
 }
 
 // Function to add markers to the map
 function addMarkersToMap() {
     imamsData.forEach(imam => {
-        const marker = L.marker(imam.coordinates)
-            .addTo(map)
-            .bindPopup(`
+        const marker = new google.maps.Marker({
+            position: imam.coordinates,
+            map: map,
+            title: imam.mosque
+        });
+        
+        // Store marker reference
+        imam.marker = marker;
+        markers.push(marker);
+        
+        // Add click listener to show info window
+        marker.addListener("click", () => {
+            const content = `
                 <strong>${imam.mosque}</strong><br>
                 Imam: ${imam.name}<br>
-                ${imam.additionalInfo}
-            `);
-        
-        // Store marker reference with imam ID for easy access later
-        imam.marker = marker;
+            `;
+            infoWindow.setContent(content);
+            infoWindow.open(map, marker);
+        });
     });
 }
 
@@ -91,8 +127,17 @@ function setupEventListeners() {
             const imam = imamsData.find(i => i.id === imamId);
             
             if (imam && imam.marker) {
-                map.setView(imam.coordinates, 15);
-                imam.marker.openPopup();
+                // Center the map on the marker
+                map.setCenter(imam.coordinates);
+                map.setZoom(15);
+                
+                // Open the info window
+                const content = `
+                    <strong>${imam.mosque}</strong><br>
+                    Imam: ${imam.name}
+                `;
+                infoWindow.setContent(content);
+                infoWindow.open(map, imam.marker);
             }
         });
     });
@@ -109,11 +154,3 @@ function setupEventListeners() {
         form.reset();
     });
 }
-
-// Initialize all functions when the page loads
-window.addEventListener('load', function() {
-    initMap();
-    addMarkersToMap();
-    createImamCards();
-    setupEventListeners();
-});

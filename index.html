@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dubai Tarawih Imam Tracker</title>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,8 +14,7 @@
         </header>
         
         <div class="intro">
-            <div class="islamic-pattern"></div>
-            <p>Assalamu Alaikum and Ramadan Kareem! This community-driven resource helps you find Imams leading tarawih prayers across Dubai. Listen to recitation samples and locate mosques on the map.</p>
+            <p>Assalamu Alaikum and Ramadan Kareem! This community-driven resource helps you find Imams leading tarawih prayers across UAE. Listen to recitation samples and locate mosques on the map.</p>
         </div>
         
         <h2>Mosque Locations</h2>
@@ -72,6 +69,8 @@
         </footer>
     </div>
 
+    <!-- Load Google Maps JavaScript API -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIT-giWmuKqDerRZAgcKPf5AoEswyKoxE&callback=initMap&libraries=&v=weekly" defer></script>
     <script src="script.js"></script>
 </body>
 </html>
