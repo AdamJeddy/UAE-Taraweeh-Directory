@@ -146,6 +146,9 @@ h2::after {
     border: 1px solid var(--dark-beige);
     position: relative;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
 }
 
 .imam-card:hover {
@@ -195,6 +198,7 @@ h2::after {
     margin-top: 10px;
     font-size: 0.9rem;
     transition: background-color 0.3s ease;
+    align-self: center;
 }
 
 .view-on-map:hover {
