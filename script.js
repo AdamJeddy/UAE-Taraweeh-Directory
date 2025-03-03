@@ -7,7 +7,7 @@ const imamsData = [
         location: "Murraqabat, Deira, Dubai",
         coordinates: {lat:25.2661163, lng:55.3277214},
         audioSample: "https://pub-fa6e49baf5604d6099352063a7441391.r2.dev/masjid_al_khabeesi.mp3",
-        additionalInfo: "Tarawih starts 25 minutes after Isha Adhan."
+        additionalInfo: "The Imam has different styles of recitation and is known for his beautiful voice."
     },
     {
         id: 2,
