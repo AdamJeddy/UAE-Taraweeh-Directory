@@ -2,7 +2,7 @@
 const imamsData = [
     {
         id: 1,
-        name: "Sheikh Ahmed Al-Maqdisi",
+        name: "Unknown Imam",
         mosque: "Masjid Al Khabeesi",
         location: "Murraqabat, Deira, Dubai",
         coordinates: {lat:25.2661163, lng:55.3277214},
