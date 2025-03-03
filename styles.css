@@ -209,6 +209,7 @@ h2::after {
     margin-bottom: 30px;
     position: relative;
     overflow: hidden;
+    border: 2px solid var(--accent-gold);
 }
 
 .contribute-section::before {
