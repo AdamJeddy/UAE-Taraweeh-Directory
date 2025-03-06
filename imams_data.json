@@ -6,7 +6,9 @@
         "location": "Murraqabat, Deira, Dubai",
         "coordinates": {"lat": 25.2661163, "lng": 55.3277214},
         "audioSample": "https://pub-fa6e49baf5604d6099352063a7441391.r2.dev/masjid_al_khabeesi.mp3",
-        "additionalInfo": "The Imam has different styles of recitation and is known for his beautiful voice."
+        "additionalInfo": "The Imam has different styles of recitation and is known for his beautiful voice.",
+        "recitationStart": 1,
+        "recitationEnd": 30
     },
     {
         "id": 2,
@@ -15,6 +17,8 @@
         "location": "MBR city District 1, Dubai",
         "coordinates": {"lat": 25.1637818, "lng": 55.2739523},
         "audioSample": "https://pub-fa6e49baf5604d6099352063a7441391.r2.dev/fatih_seferagic.mp3",
-        "additionalInfo": "Fatih Seferagic is a Bosnian-American Qari and social media influencer known for his exceptional recitation of the Quran."
+        "additionalInfo": "Fatih Seferagic is a Bosnian-American Qari and social media influencer known for his exceptional recitation of the Quran.",
+        "recitationStart": 1,
+        "recitationEnd": 30
     }
 ]
