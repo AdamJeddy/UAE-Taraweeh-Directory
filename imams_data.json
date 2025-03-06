@@ -20,5 +20,16 @@
         "additionalInfo": "Fatih Seferagic is a Bosnian-American Qari and social media influencer known for his exceptional recitation of the Quran.",
         "recitationStart": 1,
         "recitationEnd": 30
+    },
+    {
+        "id": 3,
+        "name": "Sheikh Raad Al Kurdi",
+        "mosque": "Masjid Amina bint Ahmad Al Ghurair",
+        "location": "Safia Street, Safia, Ajman",
+        "coordinates": {"lat": 25.4155170, "lng": 55.4842130},
+        "audioSample": "https://pub-fa6e49baf5604d6099352063a7441391.r2.dev/raad_al_kurdi.mp3",
+        "additionalInfo": "",
+        "recitationStart": 16,
+        "recitationEnd": 16
     }
 ]
