@@ -68,6 +68,7 @@ function addMarkersToMap() {
             const content = `
                 <strong>${imam.mosque}</strong><br>
                 Imam: ${imam.name}<br>
+                Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan
             `;
             infoWindow.setContent(content);
             infoWindow.open(map, marker);
@@ -86,6 +87,7 @@ function createImamCards() {
             <h3>${imam.name}</h3>
             <div class="mosque-name">${imam.mosque}</div>
             <div class="location">${imam.location}</div>
+            <div class="recitation-days">Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan</div>
             <audio class="audio-player" controls>
                 <source src="${imam.audioSample}" type="audio/mpeg">
                 Your browser does not support the audio element.
@@ -115,7 +117,8 @@ function setupEventListeners() {
                 // Open the info window
                 const content = `
                     <strong>${imam.mosque}</strong><br>
-                    Imam: ${imam.name}
+                    Imam: ${imam.name}<br>
+                    Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan
                 `;
                 infoWindow.setContent(content);
                 infoWindow.open(map, imam.marker);
