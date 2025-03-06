@@ -1,38 +1,8 @@
-// Sample data for Imams and mosques (you would replace this with your actual data)
-const imamsData = [
-    {
-        id: 1,
-        name: "Imam: Unidentified",
-        mosque: "Masjid Al Khabeesi",
-        location: "Murraqabat, Deira, Dubai",
-        coordinates: {lat:25.2661163, lng:55.3277214},
-        audioSample: "https://pub-fa6e49baf5604d6099352063a7441391.r2.dev/masjid_al_khabeesi.mp3",
-        additionalInfo: "The Imam has different styles of recitation and is known for his beautiful voice."
-    },
-    {
-        id: 2,
-        name: "Sheikh Fatih Seferagic",
-        mosque: "Masjid Al Joud",
-        location: "MBR city District 1, Dubai",
-        coordinates: {lat:25.1637818, lng:55.2739523},
-        audioSample: "https://pub-fa6e49baf5604d6099352063a7441391.r2.dev/fatih_seferagic.mp3", 
-        additionalInfo: "Fatih Seferagic is a Bosnian-American Qari and social media influencer known for his exceptional recitation of the Quran."
-    },
-    // {
-    //     id: 3,
-    //     name: "Sheikh Abdullah Al-Hashimi",
-    //     mosque: "Al Noor Mosque",
-    //     location: "Al Barsha, Dubai",
-    //     coordinates: [25.1127, 55.2003],
-    //     audioSample: "https://example.com/sample3.mp3", // This is a placeholder URL
-    //     additionalInfo: "Tarawih begins at 8:45 PM. Known for clear tajweed and melodious voice."
-    // }
-];
-
 // Map and markers variables
 let map;
 let markers = [];
 let infoWindow;
+let imamsData = [];
 
 // Function to initialize the map (called by the Google Maps API script)
 function initMap() {
@@ -61,12 +31,23 @@ function initMap() {
     // Create a single info window that will be reused
     infoWindow = new google.maps.InfoWindow();
     
-    // Add markers once the map is ready
-    addMarkersToMap();
-    
-    // Create Imam cards and set up event listeners
-    createImamCards();
-    setupEventListeners();
+    // Fetch the imams data and initialize the map
+    fetchImamsData();
+}
+
+// Function to fetch imams data from a JSON file
+function fetchImamsData() {
+    fetch('imams_data.json')
+        .then(response => response.json())
+        .then(data => {
+            imamsData = data;
+            // Add markers once the data is fetched
+            addMarkersToMap();
+            // Create Imam cards and set up event listeners
+            createImamCards();
+            setupEventListeners();
+        })
+        .catch(error => console.error('Error fetching imams data:', error));
 }
 
 // Function to add markers to the map
@@ -87,6 +68,7 @@ function addMarkersToMap() {
             const content = `
                 <strong>${imam.mosque}</strong><br>
                 Imam: ${imam.name}<br>
+                Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan
             `;
             infoWindow.setContent(content);
             infoWindow.open(map, marker);
@@ -105,6 +87,7 @@ function createImamCards() {
             <h3>${imam.name}</h3>
             <div class="mosque-name">${imam.mosque}</div>
             <div class="location">${imam.location}</div>
+            <div class="recitation-days">Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan</div>
             <audio class="audio-player" controls>
                 <source src="${imam.audioSample}" type="audio/mpeg">
                 Your browser does not support the audio element.
@@ -134,7 +117,8 @@ function setupEventListeners() {
                 // Open the info window
                 const content = `
                     <strong>${imam.mosque}</strong><br>
-                    Imam: ${imam.name}
+                    Imam: ${imam.name}<br>
+                    Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan
                 `;
                 infoWindow.setContent(content);
                 infoWindow.open(map, imam.marker);
