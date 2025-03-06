@@ -12,7 +12,7 @@
     },
     {
         "id": 2,
-        "name": "Sheikh Fatih Seferagic",
+        "name": "Fatih Seferagic",
         "mosque": "Masjid Al Joud",
         "location": "MBR city District 1, Dubai",
         "coordinates": {"lat": 25.1637818, "lng": 55.2739523},
@@ -23,7 +23,7 @@
     },
     {
         "id": 3,
-        "name": "Sheikh Raad Al Kurdi",
+        "name": "Raad Al Kurdi",
         "mosque": "Masjid Amina bint Ahmad Al Ghurair",
         "location": "Safia Street, Safia, Ajman",
         "coordinates": {"lat": 25.4155170, "lng": 55.4842130},
