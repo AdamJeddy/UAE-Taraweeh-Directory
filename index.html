@@ -36,6 +36,27 @@
             <!-- Imam cards will be dynamically added here -->
         </div>
         
+        <h2>Imam Directory</h2>
+        <div class="filter-container">
+            <label for="location-filter">Filter by Location:</label>
+            <input type="text" id="location-filter" placeholder="Enter location">
+            <label for="date-filter">Filter by Date:</label>
+            <input type="number" id="date-filter" placeholder="Enter day of Ramadan">
+        </div>
+        <table id="imams-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Mosque</th>
+                    <th>Location</th>
+                    <th>Recitation Days</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Imam rows will be dynamically added here -->
+            </tbody>
+        </table>
+        
         <h2>Contribute</h2>
         <!-- 
         <form id="contribute-form">
