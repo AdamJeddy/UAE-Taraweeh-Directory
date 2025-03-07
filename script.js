@@ -47,6 +47,8 @@ function fetchImamsData() {
             createImamCards();
             // Populate the table with Imam data
             populateImamTable();
+            // Populate the filters
+            populateFilters();
             // Set up filtering functionality
             setupFilters();
         })
@@ -120,28 +122,67 @@ function populateImamTable() {
     });
 }
 
+// Function to populate the filters
+function populateFilters() {
+    const cityFilter = document.getElementById('city-filter');
+    const areaFilter = document.getElementById('area-filter');
+    const cities = new Set();
+    const areas = new Set();
+    
+    imamsData.forEach(imam => {
+        const locationParts = imam.location.split(', ');
+        const city = locationParts[locationParts.length - 1];
+        const area = locationParts[locationParts.length - 2];
+        
+        cities.add(city);
+        areas.add(area);
+    });
+    
+    cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        cityFilter.appendChild(option);
+    });
+    
+    areas.forEach(area => {
+        const option = document.createElement('option');
+        option.value = area;
+        option.textContent = area;
+        areaFilter.appendChild(option);
+    });
+}
+
 // Function to set up filters
 function setupFilters() {
-    const locationFilter = document.getElementById('location-filter');
+    const cityFilter = document.getElementById('city-filter');
+    const areaFilter = document.getElementById('area-filter');
     const dateFilter = document.getElementById('date-filter');
     
-    locationFilter.addEventListener('input', filterTable);
+    cityFilter.addEventListener('change', filterTable);
+    areaFilter.addEventListener('change', filterTable);
     dateFilter.addEventListener('input', filterTable);
 }
 
 // Function to filter the table
 function filterTable() {
-    const locationFilter = document.getElementById('location-filter').value.toLowerCase();
+    const cityFilter = document.getElementById('city-filter').value;
+    const areaFilter = document.getElementById('area-filter').value;
     const dateFilter = parseInt(document.getElementById('date-filter').value);
     const tableBody = document.querySelector('#imams-table tbody');
     
     tableBody.innerHTML = '';
     
     imamsData.forEach(imam => {
-        const matchesLocation = imam.location.toLowerCase().includes(locationFilter);
+        const locationParts = imam.location.split(', ');
+        const city = locationParts[locationParts.length - 1];
+        const area = locationParts[locationParts.length - 2];
+        
+        const matchesCity = !cityFilter || city === cityFilter;
+        const matchesArea = !areaFilter || area === areaFilter;
         const matchesDate = isNaN(dateFilter) || (dateFilter >= imam.recitationStart && dateFilter <= imam.recitationEnd);
         
-        if (matchesLocation && matchesDate) {
+        if (matchesCity && matchesArea && matchesDate) {
             const row = document.createElement('tr');
             row.innerHTML = `
                 <td>${imam.name}</td>

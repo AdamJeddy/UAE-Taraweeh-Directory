@@ -318,29 +318,59 @@ table tbody tr:hover {
     background-color: var(--light-beige);
 }
 
+/* Filter styles */
+.filter-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    justify-content: center;
+}
+
+.filter-container label {
+    font-weight: bold;
+    color: var(--primary-dark);
+    margin-right: 5px;
+}
+
+.filter-container select,
+.filter-container input {
+    padding: 10px;
+    border: 1px solid var(--dark-beige);
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: white;
+    color: var(--primary-dark);
+    transition: border-color 0.3s ease;
+}
+
+.filter-container select:focus,
+.filter-container input:focus {
+    border-color: var(--primary-green);
+    outline: none;
+}
+
+.filter-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
 /* Responsive design */
 @media (max-width: 768px) {
-    .container {
-        padding: 10px;
+    .filter-container {
+        flex-direction: column;
+        align-items: stretch;
     }
     
-    h1 {
-        font-size: 2rem;
+    .filter-group {
+        flex-direction: column;
+        align-items: stretch;
     }
     
-    .map-container {
-        height: 300px;
-    }
-    
-    .imams-container {
-        grid-template-columns: 1fr;
-    }
-    
-    .contribute-section {
-        padding: 20px;
-    }
-    
-    table th, table td {
-        padding: 10px;
+    .filter-container label,
+    .filter-container select,
+    .filter-container input {
+        width: 100%;
     }
 }
