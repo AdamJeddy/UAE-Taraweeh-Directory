@@ -112,7 +112,7 @@ function populateImamTable() {
         row.innerHTML = `
             <td>${imam.name}</td>
             <td>${imam.mosque}</td>
-            <td>${imam.location}</td>
+            <td><a href="https://www.google.com/maps/search/?api=1&query=${imam.coordinates.lat},${imam.coordinates.lng}" target="_blank">${imam.location}</a></td>
             <td>${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}</td>
         `;
         
@@ -146,7 +146,7 @@ function filterTable() {
             row.innerHTML = `
                 <td>${imam.name}</td>
                 <td>${imam.mosque}</td>
-                <td>${imam.location}</td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query=${imam.coordinates.lat},${imam.coordinates.lng}" target="_blank">${imam.location}</a></td>
                 <td>${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}</td>
             `;
             
