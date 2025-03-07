@@ -1,7 +1,7 @@
 [
     {
         "id": 1,
-        "name": "Imam: Unidentified",
+        "name": "Unidentified",
         "mosque": "Masjid Al Khabeesi",
         "location": "Murraqabat, Deira, Dubai",
         "coordinates": {"lat": 25.2661163, "lng": 55.3277214},
