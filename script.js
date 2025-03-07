@@ -3,6 +3,7 @@ let map;
 let markers = [];
 let infoWindow;
 let imamsData = [];
+let cityAreasMap = new Map();
 
 // Function to initialize the map (called by the Google Maps API script)
 function initMap() {
@@ -125,9 +126,7 @@ function populateImamTable() {
 // Function to populate the filters
 function populateFilters() {
     const cityFilter = document.getElementById('city-filter');
-    const areaFilter = document.getElementById('area-filter');
     const cities = new Set();
-    const areas = new Set();
     
     imamsData.forEach(imam => {
         const locationParts = imam.location.split(', ');
@@ -135,7 +134,11 @@ function populateFilters() {
         const area = locationParts[locationParts.length - 2];
         
         cities.add(city);
-        areas.add(area);
+        
+        if (!cityAreasMap.has(city)) {
+            cityAreasMap.set(city, new Set());
+        }
+        cityAreasMap.get(city).add(area);
     });
     
     cities.forEach(city => {
@@ -144,13 +147,24 @@ function populateFilters() {
         option.textContent = city;
         cityFilter.appendChild(option);
     });
+}
+
+// Function to update area filter based on selected city
+function updateAreaFilter() {
+    const cityFilter = document.getElementById('city-filter');
+    const areaFilter = document.getElementById('area-filter');
+    const selectedCity = cityFilter.value;
     
-    areas.forEach(area => {
-        const option = document.createElement('option');
-        option.value = area;
-        option.textContent = area;
-        areaFilter.appendChild(option);
-    });
+    areaFilter.innerHTML = '<option value="">All Areas</option>';
+    
+    if (cityAreasMap.has(selectedCity)) {
+        cityAreasMap.get(selectedCity).forEach(area => {
+            const option = document.createElement('option');
+            option.value = area;
+            option.textContent = area;
+            areaFilter.appendChild(option);
+        });
+    }
 }
 
 // Function to set up filters
@@ -159,7 +173,10 @@ function setupFilters() {
     const areaFilter = document.getElementById('area-filter');
     const dateFilter = document.getElementById('date-filter');
     
-    cityFilter.addEventListener('change', filterTable);
+    cityFilter.addEventListener('change', () => {
+        updateAreaFilter();
+        filterTable();
+    });
     areaFilter.addEventListener('change', filterTable);
     dateFilter.addEventListener('input', filterTable);
 }
