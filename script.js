@@ -71,7 +71,7 @@ function addMarkersToMap() {
             const content = `
                 <strong>${imam.mosque}</strong><br>
                 Imam: ${imam.name}<br>
-                Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan
+                Recitation Days: ${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}
             `;
             infoWindow.setContent(content);
             infoWindow.open(map, marker);
@@ -90,7 +90,7 @@ function createImamCards() {
             <h3>${imam.name}</h3>
             <div class="mosque-name">${imam.mosque}</div>
             <div class="location">${imam.location}</div>
-            <div class="recitation-days">Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan</div>
+            <div class="recitation-days">Recitation Days: ${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}</div>
             <audio class="audio-player" controls>
                 <source src="${imam.audioSample}" type="audio/mpeg">
                 Your browser does not support the audio element.
@@ -113,7 +113,7 @@ function populateImamTable() {
             <td>${imam.name}</td>
             <td>${imam.mosque}</td>
             <td>${imam.location}</td>
-            <td>${imam.recitationStart} to ${imam.recitationEnd}</td>
+            <td>${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}</td>
         `;
         
         tableBody.appendChild(row);
@@ -147,12 +147,23 @@ function filterTable() {
                 <td>${imam.name}</td>
                 <td>${imam.mosque}</td>
                 <td>${imam.location}</td>
-                <td>${imam.recitationStart} to ${imam.recitationEnd} Ramadan</td>
+                <td>${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}</td>
             `;
             
             tableBody.appendChild(row);
         }
     });
+}
+
+// Function to format recitation days
+function formatRecitationDays(start, end) {
+    if (start === 1 && end === 30) {
+        return 'All Ramadan';
+    } else if (start === end) {
+        return `Day ${start}`;
+    } else {
+        return `${start} to ${end} Ramadan`;
+    }
 }
 
 // Function to set up event listeners
@@ -173,7 +184,7 @@ function setupEventListeners() {
                 const content = `
                     <strong>${imam.mosque}</strong><br>
                     Imam: ${imam.name}<br>
-                    Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan
+                    Recitation Days: ${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}
                 `;
                 infoWindow.setContent(content);
                 infoWindow.open(map, imam.marker);
