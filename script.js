@@ -3,6 +3,7 @@ let map;
 let markers = [];
 let infoWindow;
 let imamsData = [];
+let cityAreasMap = new Map();
 
 // Function to initialize the map (called by the Google Maps API script)
 function initMap() {
@@ -45,7 +46,12 @@ function fetchImamsData() {
             addMarkersToMap();
             // Create Imam cards and set up event listeners
             createImamCards();
-            setupEventListeners();
+            // Populate the table with Imam data
+            populateImamTable();
+            // Populate the filters
+            populateFilters();
+            // Set up filtering functionality
+            setupFilters();
         })
         .catch(error => console.error('Error fetching imams data:', error));
 }
@@ -68,7 +74,7 @@ function addMarkersToMap() {
             const content = `
                 <strong>${imam.mosque}</strong><br>
                 Imam: ${imam.name}<br>
-                Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan
+                Recitation Days: ${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}
             `;
             infoWindow.setContent(content);
             infoWindow.open(map, marker);
@@ -87,7 +93,7 @@ function createImamCards() {
             <h3>${imam.name}</h3>
             <div class="mosque-name">${imam.mosque}</div>
             <div class="location">${imam.location}</div>
-            <div class="recitation-days">Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan</div>
+            <div class="recitation-days">Recitation Days: ${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}</div>
             <audio class="audio-player" controls>
                 <source src="${imam.audioSample}" type="audio/mpeg">
                 Your browser does not support the audio element.
@@ -98,6 +104,124 @@ function createImamCards() {
         
         imamsContainer.appendChild(imamCard);
     });
+}
+
+// Function to populate the Imam table
+function populateImamTable() {
+    const tableBody = document.querySelector('#imams-table tbody');
+    
+    imamsData.forEach(imam => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${imam.name}</td>
+            <td>${imam.mosque}</td>
+            <td><a href="https://www.google.com/maps/search/?api=1&query=${imam.coordinates.lat},${imam.coordinates.lng}" target="_blank">${imam.location}</a></td>
+            <td>${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}</td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+}
+
+// Function to populate the filters
+function populateFilters() {
+    const cityFilter = document.getElementById('city-filter');
+    const cities = new Set();
+    
+    imamsData.forEach(imam => {
+        const locationParts = imam.location.split(', ');
+        const city = locationParts[locationParts.length - 1];
+        const area = locationParts[locationParts.length - 2];
+        
+        cities.add(city);
+        
+        if (!cityAreasMap.has(city)) {
+            cityAreasMap.set(city, new Set());
+        }
+        cityAreasMap.get(city).add(area);
+    });
+    
+    cities.forEach(city => {
+        const option = document.createElement('option');
+        option.value = city;
+        option.textContent = city;
+        cityFilter.appendChild(option);
+    });
+}
+
+// Function to update area filter based on selected city
+function updateAreaFilter() {
+    const cityFilter = document.getElementById('city-filter');
+    const areaFilter = document.getElementById('area-filter');
+    const selectedCity = cityFilter.value;
+    
+    areaFilter.innerHTML = '<option value="">All Areas</option>';
+    
+    if (cityAreasMap.has(selectedCity)) {
+        cityAreasMap.get(selectedCity).forEach(area => {
+            const option = document.createElement('option');
+            option.value = area;
+            option.textContent = area;
+            areaFilter.appendChild(option);
+        });
+    }
+}
+
+// Function to set up filters
+function setupFilters() {
+    const cityFilter = document.getElementById('city-filter');
+    const areaFilter = document.getElementById('area-filter');
+    const dateFilter = document.getElementById('date-filter');
+    
+    cityFilter.addEventListener('change', () => {
+        updateAreaFilter();
+        filterTable();
+    });
+    areaFilter.addEventListener('change', filterTable);
+    dateFilter.addEventListener('input', filterTable);
+}
+
+// Function to filter the table
+function filterTable() {
+    const cityFilter = document.getElementById('city-filter').value;
+    const areaFilter = document.getElementById('area-filter').value;
+    const dateFilter = parseInt(document.getElementById('date-filter').value);
+    const tableBody = document.querySelector('#imams-table tbody');
+    
+    tableBody.innerHTML = '';
+    
+    imamsData.forEach(imam => {
+        const locationParts = imam.location.split(', ');
+        const city = locationParts[locationParts.length - 1];
+        const area = locationParts[locationParts.length - 2];
+        
+        const matchesCity = !cityFilter || city === cityFilter;
+        const matchesArea = !areaFilter || area === areaFilter;
+        const matchesDate = isNaN(dateFilter) || (dateFilter >= imam.recitationStart && dateFilter <= imam.recitationEnd);
+        
+        if (matchesCity && matchesArea && matchesDate) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${imam.name}</td>
+                <td>${imam.mosque}</td>
+                <td><a href="https://www.google.com/maps/search/?api=1&query=${imam.coordinates.lat},${imam.coordinates.lng}" target="_blank">${imam.location}</a></td>
+                <td>${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}</td>
+            `;
+            
+            tableBody.appendChild(row);
+        }
+    });
+}
+
+// Function to format recitation days
+function formatRecitationDays(start, end) {
+    if (start === 1 && end === 30) {
+        return 'All Ramadan';
+    } else if (start === end) {
+        return `Day ${start}`;
+    } else {
+        return `${start} to ${end} Ramadan`;
+    }
 }
 
 // Function to set up event listeners
@@ -118,7 +242,7 @@ function setupEventListeners() {
                 const content = `
                     <strong>${imam.mosque}</strong><br>
                     Imam: ${imam.name}<br>
-                    Recitation Days: ${imam.recitationStart} to ${imam.recitationEnd} Ramadan
+                    Recitation Days: ${formatRecitationDays(imam.recitationStart, imam.recitationEnd)}
                 `;
                 infoWindow.setContent(content);
                 infoWindow.open(map, imam.marker);
