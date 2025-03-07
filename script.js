@@ -45,7 +45,10 @@ function fetchImamsData() {
             addMarkersToMap();
             // Create Imam cards and set up event listeners
             createImamCards();
-            setupEventListeners();
+            // Populate the table with Imam data
+            populateImamTable();
+            // Set up filtering functionality
+            setupFilters();
         })
         .catch(error => console.error('Error fetching imams data:', error));
 }
@@ -97,6 +100,58 @@ function createImamCards() {
         `;
         
         imamsContainer.appendChild(imamCard);
+    });
+}
+
+// Function to populate the Imam table
+function populateImamTable() {
+    const tableBody = document.querySelector('#imams-table tbody');
+    
+    imamsData.forEach(imam => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${imam.name}</td>
+            <td>${imam.mosque}</td>
+            <td>${imam.location}</td>
+            <td>${imam.recitationStart} to ${imam.recitationEnd}</td>
+        `;
+        
+        tableBody.appendChild(row);
+    });
+}
+
+// Function to set up filters
+function setupFilters() {
+    const locationFilter = document.getElementById('location-filter');
+    const dateFilter = document.getElementById('date-filter');
+    
+    locationFilter.addEventListener('input', filterTable);
+    dateFilter.addEventListener('input', filterTable);
+}
+
+// Function to filter the table
+function filterTable() {
+    const locationFilter = document.getElementById('location-filter').value.toLowerCase();
+    const dateFilter = parseInt(document.getElementById('date-filter').value);
+    const tableBody = document.querySelector('#imams-table tbody');
+    
+    tableBody.innerHTML = '';
+    
+    imamsData.forEach(imam => {
+        const matchesLocation = imam.location.toLowerCase().includes(locationFilter);
+        const matchesDate = isNaN(dateFilter) || (dateFilter >= imam.recitationStart && dateFilter <= imam.recitationEnd);
+        
+        if (matchesLocation && matchesDate) {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${imam.name}</td>
+                <td>${imam.mosque}</td>
+                <td>${imam.location}</td>
+                <td>${imam.recitationStart} to ${imam.recitationEnd} Ramadan</td>
+            `;
+            
+            tableBody.appendChild(row);
+        }
     });
 }
 
