@@ -16,6 +16,128 @@ let isDragging = false;
 // Audio element
 const globalAudio = document.getElementById('global-audio');
 
+// ===== Language & Translations =====
+let currentLang = localStorage.getItem('taraweeh_lang') || 'en';
+
+const translations = {
+    en: {
+        navTitle: 'Taraweeh UAE',
+        heroTitle: 'Ramadan Kareem',
+        heroSubtitle: 'Discover Quran reciters across UAE mosques',
+        countdownLabel: 'Ramadan 1447H begins in',
+        ramadanDay: 'Day {day} of Ramadan',
+        days: 'Days',
+        hours: 'Hours',
+        mins: 'Mins',
+        discoverBtn: 'Discover Imams',
+        tabDiscover: 'Discover',
+        tabDirectory: 'Directory',
+        tabMosques: 'Mosques',
+        discoverTitle: 'Discover Imams',
+        nearest: 'Nearest',
+        all: 'All',
+        previous: 'Previous',
+        tapToSave: 'Tap ♡ to save',
+        next: 'Next',
+        counterOf: 'of',
+        noMore: 'No more imams to discover',
+        checkBack: 'Check back later or reset your filters',
+        reset: 'Reset',
+        directoryTitle: 'Imam Directory',
+        searchPlaceholder: 'Search imam or mosque...',
+        allCities: 'All Cities',
+        allStyles: 'All Styles',
+        allTypes: 'All Types',
+        noFound: 'No imams found',
+        adjustFilters: 'Try adjusting your search or filters',
+        statsTitle: 'Coverage',
+        mosques: 'Mosques',
+        imams: 'Imams',
+        cities: 'Cities',
+        recordings: 'Recordings',
+        contributeTitle: 'Know an imam reciting this Ramadan?',
+        contributeText: 'Help our community grow by sharing imam and mosque information.',
+        submitBtn: 'Submit an Imam',
+        orEmail: 'or email',
+        favTitle: 'My Favorites',
+        noFavs: 'No favorites yet',
+        noFavsText: 'Swipe right on imams you like to save them here',
+        saved: 'Saved',
+        removed: 'Removed',
+        locationDisabled: 'Location disabled',
+        locationNotSupported: 'Location not supported',
+        showingNearest: 'Showing nearest mosques',
+        locationDenied: 'Location access denied',
+        audioFailed: 'Audio failed to load',
+        dataFailed: 'Failed to load data',
+        playingNow: 'Now playing:',
+        allRamadan: 'All Ramadan',
+        day: 'Day',
+        imam: 'imam',
+        away: 'away'
+    },
+    ar: {
+        navTitle: 'التراويح الإمارات',
+        heroTitle: 'رمضان كريم',
+        heroSubtitle: 'اكتشف قراء القرآن في مساجد الإمارات',
+        countdownLabel: 'يبدأ رمضان 1447هـ في',
+        ramadanDay: 'اليوم {day} من رمضان',
+        days: 'أيام',
+        hours: 'ساعات',
+        mins: 'دقائق',
+        discoverBtn: 'اكتشف الأئمة',
+        tabDiscover: 'اكتشف',
+        tabDirectory: 'الدليل',
+        tabMosques: 'المساجد',
+        discoverTitle: 'اكتشف الأئمة',
+        nearest: 'الأقرب',
+        all: 'الكل',
+        previous: 'السابق',
+        tapToSave: 'انقر ♡ للحفظ',
+        next: 'التالي',
+        counterOf: 'من',
+        noMore: 'لا مزيد من الأئمة',
+        checkBack: 'تحقق لاحقاً أو أعد تعيين البحث',
+        reset: 'إعادة تعيين',
+        directoryTitle: 'دليل الأئمة',
+        searchPlaceholder: 'ابحث عن إمام أو مسجد...',
+        allCities: 'كل المدن',
+        allStyles: 'كل الأساليب',
+        allTypes: 'كل الأنواع',
+        noFound: 'لم يتم العثور على أئمة',
+        adjustFilters: 'حاول تعديل البحث أو المرشحات',
+        statsTitle: 'التغطية',
+        mosques: 'المساجد',
+        imams: 'الأئمة',
+        cities: 'المدن',
+        recordings: 'التسجيلات',
+        contributeTitle: 'هل تعرف إماماً يصلي التراويح هذا رمضان؟',
+        contributeText: 'ساعد مجتمعنا على النمو بمشاركة معلومات الإمام والمسجد.',
+        submitBtn: 'إضافة إمام',
+        orEmail: 'أو بريد إلكتروني',
+        favTitle: 'المفضلة',
+        noFavs: 'لا توجد مفضلات بعد',
+        noFavsText: 'اسحب يميناً على الأئمة التي تعجبك لحفظها هنا',
+        saved: 'تم الحفظ',
+        removed: 'تمت الإزالة',
+        locationDisabled: 'تم تعطيل الموقع',
+        locationNotSupported: 'الموقع غير مدعوم',
+        showingNearest: 'عرض أقرب المساجد',
+        locationDenied: 'تم رفض الوصول إلى الموقع',
+        audioFailed: 'فشل تحميل الصوت',
+        dataFailed: 'فشل تحميل البيانات',
+        playingNow: 'يتم تشغيل:',
+        allRamadan: 'كل رمضان',
+        day: 'يوم',
+        imam: 'إمام',
+        away: 'بعيداً'
+    }
+};
+
+function t(key) {
+    return translations[currentLang][key] || translations.en[key] || key;
+}
+
 // ===== Ramadan 2026 (1447H) dates in UAE timezone =====
 const RAMADAN_START = new Date('2026-02-16T00:00:00+04:00'); // approximate
 const RAMADAN_END   = new Date('2026-03-18T23:59:59+04:00');
@@ -24,6 +146,7 @@ const RAMADAN_END   = new Date('2026-03-18T23:59:59+04:00');
 // Initialization
 // ──────────────────────────────────────
 document.addEventListener('DOMContentLoaded', () => {
+    initLanguage();
     initTheme();
     initCountdown();
     fetchImamsData();
@@ -51,7 +174,7 @@ function fetchImamsData() {
         })
         .catch(err => {
             console.error('Failed to load imam data:', err);
-            showToast('Failed to load data');
+            showToast(t('dataFailed'));
         });
 }
 
@@ -73,11 +196,11 @@ function updateCountdown() {
     if (now >= RAMADAN_START && now <= RAMADAN_END) {
         // During Ramadan — show which day
         const dayNum = Math.ceil((now - RAMADAN_START) / (1000 * 60 * 60 * 24));
-        labelEl.textContent = 'Ramadan Mubarak';
+        const ramadanText = t('ramadanDay').replace('{day}', dayNum);
         const container = document.getElementById('countdown');
         container.innerHTML = `
-            <div class="countdown-label">Ramadan Mubarak</div>
-            <div class="ramadan-day-display">Day ${dayNum} of Ramadan</div>
+            <div class="countdown-label">${t('heroTitle')}</div>
+            <div class="ramadan-day-display">${ramadanText}</div>
         `;
     } else if (now < RAMADAN_START) {
         // Before Ramadan — countdown
@@ -93,6 +216,153 @@ function updateCountdown() {
         labelEl.textContent = 'Ramadan 1447H has ended';
         document.querySelector('.countdown-timer').style.display = 'none';
     }
+}
+
+// ──────────────────────────────────────
+// Language System
+// ──────────────────────────────────────
+function initLanguage() {
+    // Set initial direction
+    document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', currentLang);
+    
+    // Update button text
+    updateLangButton();
+    
+    // Update all UI text
+    updateUILanguage();
+    
+    // Language toggle button
+    document.getElementById('lang-toggle').addEventListener('click', toggleLanguage);
+}
+
+function toggleLanguage() {
+    currentLang = currentLang === 'en' ? 'ar' : 'en';
+    localStorage.setItem('taraweeh_lang', currentLang);
+    
+    // Update direction
+    document.documentElement.setAttribute('dir', currentLang === 'ar' ? 'rtl' : 'ltr');
+    document.documentElement.setAttribute('lang', currentLang);
+    
+    // Update button
+    updateLangButton();
+    
+    // Update all text
+    updateUILanguage();
+    
+    // Re-render dynamic content
+    updateCountdown();
+    renderDiscoverCards();
+    renderDirectory(getCurrentDirectoryFilter());
+    renderStats();
+    if (document.getElementById('favorites-panel').classList.contains('open')) {
+        renderFavoritesList();
+    }
+}
+
+function updateLangButton() {
+    document.getElementById('lang-text').textContent = currentLang === 'en' ? 'ع' : 'EN';
+}
+
+function updateUILanguage() {
+    // Nav
+    document.querySelector('.nav-title').textContent = t('navTitle');
+    
+    // Hero
+    document.querySelector('.hero h1').textContent = t('heroTitle');
+    document.querySelector('.hero-subtitle').textContent = t('heroSubtitle');
+    document.getElementById('start-discover').innerHTML = `
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+        ${t('discoverBtn')}
+    `;
+    
+    // Countdown labels
+    const cdLabel = document.getElementById('countdown-label');
+    if (cdLabel) cdLabel.textContent = t('countdownLabel');
+    const cdTexts = document.querySelectorAll('.countdown-text');
+    if (cdTexts.length === 3) {
+        cdTexts[0].textContent = t('days');
+        cdTexts[1].textContent = t('hours');
+        cdTexts[2].textContent = t('mins');
+    }
+    
+    // Tabs
+    const tabs = document.querySelectorAll('.tab');
+    if (tabs.length >= 3) {
+        tabs[0].querySelector('span').textContent = t('tabDiscover');
+        tabs[1].querySelector('span').textContent = t('tabDirectory');
+        tabs[2].querySelector('span').textContent = t('tabMosques');
+    }
+    
+    // Discover section
+    document.querySelector('#tab-discover h2').textContent = t('discoverTitle');
+    document.getElementById('location-toggle').innerHTML = `
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        ${t('nearest')}
+    `;
+    
+    // Update filter pills
+    const filterPills = document.querySelectorAll('#filter-pills .pill-btn');
+    if (filterPills[0]) filterPills[0].textContent = t('all');
+    
+    // Swipe nav info
+    const navInfo = document.querySelector('.swipe-nav-info > div:last-child');
+    if (navInfo) {
+        navInfo.innerHTML = currentLang === 'ar' 
+            ? `${t('next')} ← · ${t('tapToSave')} · → ${t('previous')}`
+            : `← ${t('previous')} · ${t('tapToSave')} · ${t('next')} →`;
+    }
+    
+    // Empty state
+    const emptyH3 = document.querySelector('#empty-state h3');
+    const emptyP = document.querySelector('#empty-state p');
+    if (emptyH3) emptyH3.textContent = t('noMore');
+    if (emptyP) emptyP.textContent = t('checkBack');
+    const resetBtn = document.getElementById('reset-discover');
+    if (resetBtn) resetBtn.textContent = t('reset');
+    
+    // Directory section
+    document.querySelector('#tab-directory h2').textContent = t('directoryTitle');
+    document.getElementById('search-input').placeholder = t('searchPlaceholder');
+    
+    // Filters
+    const cityFilter = document.getElementById('city-filter');
+    const styleFilter = document.getElementById('style-filter');
+    const typeFilter = document.getElementById('type-filter');
+    if (cityFilter && cityFilter.options[0]) cityFilter.options[0].text = t('allCities');
+    if (styleFilter && styleFilter.options[0]) styleFilter.options[0].text = t('allStyles');
+    if (typeFilter && typeFilter.options[0]) typeFilter.options[0].text = t('allTypes');
+    
+    // Stats section
+    document.querySelector('#tab-stats h2').textContent = t('statsTitle');
+    const statLabels = document.querySelectorAll('.stat-label');
+    if (statLabels.length >= 4) {
+        statLabels[0].textContent = t('mosques');
+        statLabels[1].textContent = t('imams');
+        statLabels[2].textContent = t('cities');
+        statLabels[3].textContent = t('recordings');
+    }
+    
+    // Contribute card
+    const contributeH3 = document.querySelector('.contribute-card h3');
+    const contributeP = document.querySelector('.contribute-card p:not(.contribute-alt)');
+    const contributeBtn = document.querySelector('.contribute-btn');
+    const contributeAlt = document.querySelector('.contribute-alt');
+    if (contributeH3) contributeH3.textContent = t('contributeTitle');
+    if (contributeP) contributeP.textContent = t('contributeText');
+    if (contributeBtn) {
+        contributeBtn.innerHTML = `
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            ${t('submitBtn')}
+        `;
+    }
+    
+    // Favorites panel
+    document.querySelector('.favorites-header h2').textContent = t('favTitle');
+    const emptyFavH3 = document.querySelector('#empty-favorites h3');
+    const emptyFavP = document.querySelector('#empty-favorites p');
+    if (emptyFavH3) emptyFavH3.textContent = t('noFavs');
+    if (emptyFavP) emptyFavP.textContent = t('noFavsText');
 }
 
 // ──────────────────────────────────────
@@ -275,7 +545,7 @@ function createSwipeCard(imam, stackPos) {
         const svg = favBtn.querySelector('svg');
         const isFavNow = favorites.includes(imam.id);
         svg.setAttribute('fill', isFavNow ? 'currentColor' : 'none');
-        showToast(isFavNow ? `💛 Saved ${imam.name}` : `Removed ${imam.name}`);
+        showToast(isFavNow ? `💛 ${t('saved')} ${imam.name}` : `${t('removed')} ${imam.name}`);
     });
 
     return card;
@@ -480,12 +750,12 @@ function toggleLocation() {
         buildDiscoverQueue();
         renderDiscoverCards();
         renderDirectory();
-        showToast('Location disabled');
+        showToast(t('locationDisabled'));
         return;
     }
 
     if (!navigator.geolocation) {
-        showToast('Location not supported');
+        showToast(t('locationNotSupported'));
         return;
     }
 
@@ -502,13 +772,13 @@ function toggleLocation() {
             buildDiscoverQueue(activeFilter ? activeFilter.dataset.filter : 'all');
             renderDiscoverCards();
             renderDirectory();
-            showToast('Showing nearest mosques');
+            showToast(t('showingNearest'));
         },
         () => {
             btn.innerHTML = `
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
                 Nearest`;
-            showToast('Location access denied');
+            showToast(t('locationDenied'));
         },
         { enableHighAccuracy: true, timeout: 8000 }
     );
@@ -551,8 +821,8 @@ function renderDirectory(filter = {}) {
         list.innerHTML = `
             <div class="empty-state">
                 <div class="empty-icon">🔍</div>
-                <h3>No imams found</h3>
-                <p>Try adjusting your search or filters</p>
+                <h3>${t('noFound')}</h3>
+                <p>${t('adjustFilters')}</p>
             </div>`;
         return;
     }
@@ -758,7 +1028,7 @@ function initAudioBar() {
 function playAudio(imam) {
     currentAudioImam = imam;
     globalAudio.src = imam.audioSample;
-    globalAudio.play().catch(() => showToast('Audio failed to load'));
+    globalAudio.play().catch(() => showToast(t('audioFailed')));
 
     // Update bar
     document.getElementById('audio-bar').style.display = 'block';
@@ -890,7 +1160,7 @@ function handleDeepLink() {
                         // Switch to directory tab and highlight
                         document.querySelector('.tab[data-tab="directory"]').click();
                         playAudio(imam);
-                        showToast(`Now playing: ${imam.name}`);
+                        showToast(`${t('playingNow')} ${imam.name}`);
                     }
                 }
             }, 200);
@@ -902,9 +1172,9 @@ function handleDeepLink() {
 // Utility Functions
 // ──────────────────────────────────────
 function formatRecitationDays(start, end) {
-    if (start === 1 && end === 30) return 'All Ramadan';
-    if (start === end) return `Day ${start}`;
-    return `Day ${start}–${end}`;
+    if (start === 1 && end === 30) return t('allRamadan');
+    if (start === end) return `${t('day')} ${start}`;
+    return `${t('day')} ${start}–${end}`;
 }
 
 function haversine(lat1, lon1, lat2, lon2) {
@@ -918,8 +1188,8 @@ function haversine(lat1, lon1, lat2, lon2) {
 }
 
 function formatDistance(km) {
-    if (km < 1) return `${Math.round(km * 1000)}m away`;
-    return `${km.toFixed(1)}km away`;
+    if (km < 1) return `${Math.round(km * 1000)}m ${t('away')}`;
+    return `${km.toFixed(1)}km ${t('away')}`;
 }
 
 function showToast(msg) {

@@ -101,6 +101,17 @@ body {
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     min-height: 100dvh;
+    direction: ltr;
+    transition: direction 0s;
+}
+
+/* RTL Support for Arabic */
+[dir="rtl"] {
+    direction: rtl;
+}
+
+[dir="rtl"] body {
+    font-family: 'Segoe UI', Tahoma, Arial, sans-serif;
 }
 
 /* Geometric background pattern */
@@ -177,6 +188,12 @@ body::before {
 .nav-btn:active {
     transform: scale(0.9);
     background: var(--gold-glow);
+}
+
+.lang-text {
+    font-size: 1.2rem;
+    font-weight: 700;
+    font-family: 'Arial', sans-serif;
 }
 
 .fav-count {
