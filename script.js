@@ -175,6 +175,7 @@ function buildDiscoverQueue(filter = 'all') {
 
     discoverQueue = pool;
     currentCardIndex = 0;
+    updateCardCounter();
 }
 
 // ──────────────────────────────────────
@@ -194,6 +195,7 @@ function renderDiscoverCards() {
 
     emptyState.style.display = 'none';
     actions.style.display = 'flex';
+    document.getElementById('swipe-nav-info').style.display = 'block';
 
     // Render top 3 cards (stacked)
     const visible = discoverQueue.slice(currentCardIndex, currentCardIndex + 3);
@@ -209,11 +211,7 @@ function renderDiscoverCards() {
 
     // Bind action buttons
     bindActionButtons();
-
-    // Show hints briefly
-    const hints = document.getElementById('swipe-instructions');
-    hints.classList.add('show');
-    setTimeout(() => hints.classList.remove('show'), 2500);
+    updateCardCounter();
 }
 
 function createSwipeCard(imam, stackPos) {
@@ -238,10 +236,13 @@ function createSwipeCard(imam, stackPos) {
         : '';
 
     card.innerHTML = `
-        <div class="swipe-overlay like">SAVED</div>
-        <div class="swipe-overlay nope">SKIP</div>
+        <div class="swipe-overlay prev">←</div>
+        <div class="swipe-overlay next">→</div>
         <div class="card-gold-bar"></div>
         <div class="card-body">
+            <button class="card-fav-btn ${isFav ? 'favorited' : ''}" data-fav-id="${imam.id}" aria-label="Toggle favorite">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="${isFav ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
             <div class="card-imam-name">${imam.name}</div>
             <div class="card-mosque-name">${imam.mosque}</div>
             <div class="card-location">
@@ -264,6 +265,18 @@ function createSwipeCard(imam, stackPos) {
             </div>
         </div>
     `;
+
+    // Favorite button handler
+    const favBtn = card.querySelector('[data-fav-id]');
+    favBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        toggleFavorite(imam.id);
+        favBtn.classList.toggle('favorited');
+        const svg = favBtn.querySelector('svg');
+        const isFavNow = favorites.includes(imam.id);
+        svg.setAttribute('fill', isFavNow ? 'currentColor' : 'none');
+        showToast(isFavNow ? `💛 Saved ${imam.name}` : `Removed ${imam.name}`);
+    });
 
     return card;
 }
@@ -291,20 +304,20 @@ function setupSwipeGesture(card) {
         card.style.transform = `translateX(${currentX}px) rotate(${rotation}deg)`;
         moved = true;
 
-        // Show overlays
-        const likeOverlay = card.querySelector('.swipe-overlay.like');
-        const nopeOverlay = card.querySelector('.swipe-overlay.nope');
-        const threshold = 60;
+        // Show arrow overlays
+        const nextOverlay = card.querySelector('.swipe-overlay.next');
+        const prevOverlay = card.querySelector('.swipe-overlay.prev');
+        const threshold = 40;
 
         if (currentX > threshold) {
-            likeOverlay.style.opacity = Math.min((currentX - threshold) / 80, 1);
-            nopeOverlay.style.opacity = 0;
+            nextOverlay.style.opacity = Math.min((currentX - threshold) / 80, 1);
+            prevOverlay.style.opacity = 0;
         } else if (currentX < -threshold) {
-            nopeOverlay.style.opacity = Math.min((-currentX - threshold) / 80, 1);
-            likeOverlay.style.opacity = 0;
+            prevOverlay.style.opacity = Math.min((-currentX - threshold) / 80, 1);
+            nextOverlay.style.opacity = 0;
         } else {
-            likeOverlay.style.opacity = 0;
-            nopeOverlay.style.opacity = 0;
+            nextOverlay.style.opacity = 0;
+            prevOverlay.style.opacity = 0;
         }
     }
 
@@ -317,20 +330,20 @@ function setupSwipeGesture(card) {
         card.classList.add('animating');
 
         if (currentX > swipeThreshold) {
-            // Swipe right → favorite
+            // Swipe right → next
             card.style.transform = `translateX(${window.innerWidth}px) rotate(30deg)`;
             card.style.opacity = '0';
             setTimeout(() => handleSwipe('right'), 300);
         } else if (currentX < -swipeThreshold) {
-            // Swipe left → skip
+            // Swipe left ← previous
             card.style.transform = `translateX(-${window.innerWidth}px) rotate(-30deg)`;
             card.style.opacity = '0';
             setTimeout(() => handleSwipe('left'), 300);
         } else {
             // Return to center
             card.style.transform = '';
-            card.querySelector('.swipe-overlay.like').style.opacity = 0;
-            card.querySelector('.swipe-overlay.nope').style.opacity = 0;
+            card.querySelector('.swipe-overlay.next').style.opacity = 0;
+            card.querySelector('.swipe-overlay.prev').style.opacity = 0;
         }
         currentX = 0;
     }
@@ -344,31 +357,36 @@ function setupSwipeGesture(card) {
 }
 
 function handleSwipe(direction) {
-    if (currentCardIndex >= discoverQueue.length) return;
-
-    const imam = discoverQueue[currentCardIndex];
     if (direction === 'right') {
-        addFavorite(imam.id);
-        showToast(`💛 Saved ${imam.name}`);
+        // Next card
+        currentCardIndex++;
+    } else if (direction === 'left') {
+        // Previous card
+        currentCardIndex--;
     }
-    currentCardIndex++;
 
+    // Clamp index
+    if (currentCardIndex < 0) currentCardIndex = 0;
     if (currentCardIndex >= discoverQueue.length) {
+        currentCardIndex = discoverQueue.length - 1;
         document.getElementById('card-stack').innerHTML = '';
         document.getElementById('empty-state').style.display = 'block';
         document.getElementById('swipe-actions').style.display = 'none';
-    } else {
-        renderDiscoverCards();
+        document.getElementById('swipe-nav-info').style.display = 'none';
+        return;
     }
+
+    renderDiscoverCards();
+    updateCardCounter();
 }
 
 // ──────────────────────────────────────
 // Discover: Action Buttons
 // ──────────────────────────────────────
 function bindActionButtons() {
-    document.getElementById('btn-skip').onclick = () => {
+    document.getElementById('btn-prev').onclick = () => {
         const topCard = document.querySelector('.card-stack .swipe-card:last-child');
-        if (topCard) {
+        if (topCard && currentCardIndex > 0) {
             topCard.classList.add('animating');
             topCard.style.transform = `translateX(-${window.innerWidth}px) rotate(-20deg)`;
             topCard.style.opacity = '0';
@@ -376,9 +394,9 @@ function bindActionButtons() {
         }
     };
 
-    document.getElementById('btn-fav').onclick = () => {
+    document.getElementById('btn-next').onclick = () => {
         const topCard = document.querySelector('.card-stack .swipe-card:last-child');
-        if (topCard) {
+        if (topCard && currentCardIndex < discoverQueue.length - 1) {
             topCard.classList.add('animating');
             topCard.style.transform = `translateX(${window.innerWidth}px) rotate(20deg)`;
             topCard.style.opacity = '0';
@@ -406,6 +424,24 @@ function bindActionButtons() {
 
     // City filter pills
     buildCityFilterPills();
+}
+
+function updateCardCounter() {
+    const counterText = document.getElementById('counter-text');
+    const prevBtn = document.getElementById('btn-prev');
+    const nextBtn = document.getElementById('btn-next');
+    
+    if (discoverQueue.length > 0) {
+        counterText.textContent = `${currentCardIndex + 1} of ${discoverQueue.length}`;
+        
+        // Disable buttons at boundaries
+        prevBtn.disabled = currentCardIndex === 0;
+        nextBtn.disabled = currentCardIndex >= discoverQueue.length - 1;
+    } else {
+        counterText.textContent = '0 of 0';
+        prevBtn.disabled = true;
+        nextBtn.disabled = true;
+    }
 }
 
 function buildCityFilterPills() {

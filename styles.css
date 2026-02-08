@@ -5,28 +5,28 @@
 
 /* --- CSS Custom Properties --- */
 :root {
-    /* Ramadan Night Palette */
-    --bg-primary: #0d0b1a;
-    --bg-secondary: #15122a;
-    --bg-card: #1e1a36;
-    --bg-elevated: #262142;
-    --bg-glass: rgba(30, 26, 54, 0.85);
+    /* Ramadan Night Palette - Warm & Traditional */
+    --bg-primary: #0f1419;
+    --bg-secondary: #1a1f26;
+    --bg-card: #1e252e;
+    --bg-elevated: #252d38;
+    --bg-glass: rgba(30, 37, 46, 0.92);
 
-    /* Accent Colors */
-    --gold: #f0c040;
-    --gold-dim: #b8922f;
-    --gold-glow: rgba(240, 192, 64, 0.15);
-    --teal: #4ecdc4;
-    --teal-dim: #2a8f89;
-    --green: #2ecc71;
-    --red-soft: #e74c5f;
-    --purple: #9b59b6;
+    /* Accent Colors - Traditional Islamic */
+    --gold: #d4a574;
+    --gold-dim: #9d7a52;
+    --gold-glow: rgba(212, 165, 116, 0.15);
+    --teal: #3d9a8f;
+    --teal-dim: #2a6960;
+    --green: #2d7a5f;
+    --green-light: #4aa885;
+    --warm-cream: #f5ebe0;
 
     /* Text */
-    --text-primary: #f0ece2;
-    --text-secondary: #a09bb5;
-    --text-muted: #6b6580;
-    --text-on-gold: #1a0a2e;
+    --text-primary: #e8dfd6;
+    --text-secondary: #a89f94;
+    --text-muted: #6e6660;
+    --text-on-gold: #1a1410;
 
     /* Layout */
     --radius-sm: 10px;
@@ -59,21 +59,25 @@
     --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
-/* Light mode overrides */
+/* Light mode - Warm Cream Theme */
 [data-theme="light"] {
-    --bg-primary: #faf6f0;
-    --bg-secondary: #f0ece3;
+    --bg-primary: #f5ebe0;
+    --bg-secondary: #ede3d8;
     --bg-card: #ffffff;
-    --bg-elevated: #ffffff;
-    --bg-glass: rgba(255, 255, 255, 0.88);
-    --text-primary: #1a1430;
-    --text-secondary: #5a5570;
-    --text-muted: #9994a8;
-    --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
-    --shadow-md: 0 4px 20px rgba(0,0,0,0.1);
-    --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
-    --shadow-gold: 0 4px 20px rgba(240, 192, 64, 0.15);
-    --gold-glow: rgba(240, 192, 64, 0.1);
+    --bg-elevated: #fefdfb;
+    --bg-glass: rgba(255, 255, 255, 0.92);
+    --text-primary: #2d2520;
+    --text-secondary: #5c524a;
+    --text-muted: #8a8078;
+    --gold: #b8935a;
+    --gold-dim: #9d7a48;
+    --teal: #2d7a6f;
+    --green: #2d7a5f;
+    --shadow-sm: 0 2px 8px rgba(45, 37, 32, 0.08);
+    --shadow-md: 0 4px 20px rgba(45, 37, 32, 0.1);
+    --shadow-lg: 0 8px 40px rgba(45, 37, 32, 0.12);
+    --shadow-gold: 0 4px 20px rgba(184, 147, 90, 0.2);
+    --gold-glow: rgba(184, 147, 90, 0.12);
 }
 
 /* --- Base Reset --- */
@@ -110,7 +114,7 @@ body::before {
 }
 
 [data-theme="light"] body::before {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath fill='%23d4af37' fill-opacity='0.06' d='M30 0L60 30L30 60L0 30Z'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60' viewBox='0 0 60 60'%3E%3Cpath fill='%23b8935a' fill-opacity='0.05' d='M30 0L60 30L30 60L0 30Z'/%3E%3C/svg%3E");
 }
 
 /* --- Navigation Bar --- */
@@ -205,19 +209,19 @@ body::before {
     padding: calc(var(--nav-height) + var(--space-xl)) var(--space-md) var(--space-xl);
     text-align: center;
     overflow: hidden;
-    background: linear-gradient(180deg, #1a0a2e 0%, var(--bg-primary) 100%);
+    background: linear-gradient(180deg, #1a2026 0%, var(--bg-primary) 100%);
 }
 
 [data-theme="light"] .hero {
-    background: linear-gradient(180deg, #e8dcc8 0%, var(--bg-primary) 100%);
+    background: linear-gradient(180deg, #e8dfd6 0%, var(--bg-primary) 100%);
 }
 
 .hero-bg-pattern {
     position: absolute;
     inset: 0;
     background-image:
-        radial-gradient(circle at 20% 80%, rgba(240, 192, 64, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 80% 20%, rgba(78, 205, 196, 0.06) 0%, transparent 50%);
+        radial-gradient(circle at 20% 80%, rgba(212, 165, 116, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(61, 154, 143, 0.08) 0%, transparent 50%);
     pointer-events: none;
 }
 
@@ -240,7 +244,7 @@ body::before {
 .hero h1 {
     font-size: 2rem;
     font-weight: 800;
-    background: linear-gradient(135deg, var(--gold) 0%, #ffe082 50%, var(--gold) 100%);
+    background: linear-gradient(135deg, var(--gold) 0%, var(--warm-cream) 50%, var(--gold) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
@@ -488,21 +492,35 @@ body::before {
     padding: 0 var(--space-sm);
     pointer-events: none;
     z-index: 5;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-.swipe-instructions.show {
     opacity: 1;
 }
 
 .swipe-hint {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0, 0, 0, 0.75);
     color: white;
-    padding: 6px 14px;
-    border-radius: var(--radius-full);
-    font-size: 0.75rem;
+    padding: 12px;
+    border-radius: 50%;
+    font-size: 1.5rem;
     font-weight: 600;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: hint-pulse 2s ease-in-out infinite;
+}
+
+.swipe-hint.left {
+    animation-delay: 0s;
+}
+
+.swipe-hint.right {
+    animation-delay: 1s;
+}
+
+@keyframes hint-pulse {
+    0%, 100% { opacity: 0.4; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.1); }
 }
 
 .card-stack {
@@ -546,6 +564,35 @@ body::before {
     display: flex;
     flex-direction: column;
     padding: var(--space-lg);
+    position: relative;
+}
+
+.card-fav-btn {
+    position: absolute;
+    top: var(--space-md);
+    right: var(--space-md);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid rgba(212, 165, 116, 0.3);
+    background: var(--bg-card);
+    color: var(--gold-dim);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    z-index: 2;
+}
+
+.card-fav-btn:active {
+    transform: scale(0.9);
+}
+
+.card-fav-btn.favorited {
+    background: var(--gold);
+    color: var(--text-on-gold);
+    border-color: var(--gold);
 }
 
 .card-imam-name {
@@ -593,13 +640,13 @@ body::before {
 }
 
 .card-tag.style {
-    background: rgba(78, 205, 196, 0.15);
-    color: var(--teal);
+    background: rgba(45, 122, 95, 0.15);
+    color: var(--green);
 }
 
 .card-tag.type {
-    background: rgba(155, 89, 182, 0.15);
-    color: var(--purple);
+    background: rgba(61, 154, 143, 0.15);
+    color: var(--teal);
 }
 
 .card-tag.days {
@@ -657,26 +704,21 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.2rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
+    font-size: 3rem;
     opacity: 0;
     transition: opacity 0.1s ease;
     pointer-events: none;
     z-index: 10;
 }
 
-.swipe-overlay.like {
-    background: rgba(46, 204, 113, 0.15);
-    border: 3px solid var(--green);
-    color: var(--green);
+.swipe-overlay.next {
+    background: rgba(61, 154, 143, 0.1);
+    color: var(--teal);
 }
 
-.swipe-overlay.nope {
-    background: rgba(231, 76, 95, 0.15);
-    border: 3px solid var(--red-soft);
-    color: var(--red-soft);
+.swipe-overlay.prev {
+    background: rgba(212, 165, 116, 0.1);
+    color: var(--gold);
 }
 
 /* --- Swipe Action Buttons --- */
@@ -686,6 +728,29 @@ body::before {
     justify-content: center;
     gap: var(--space-lg);
     padding: var(--space-md) 0;
+}
+
+.swipe-nav-info {
+    text-align: center;
+    padding: var(--space-sm) 0;
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.card-counter {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--bg-card);
+    padding: 6px 14px;
+    border-radius: var(--radius-full);
+    font-weight: 600;
+    font-size: 0.8rem;
+    margin-bottom: var(--space-xs);
+}
+
+.card-counter svg {
+    color: var(--gold);
 }
 
 .action-btn {
@@ -706,9 +771,18 @@ body::before {
     transform: scale(0.85);
 }
 
+.action-btn:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+}
+
+.action-btn:disabled:active {
+    transform: scale(1);
+}
+
 .action-btn.skip {
-    border-color: var(--red-soft);
-    color: var(--red-soft);
+    border-color: var(--gold-dim);
+    color: var(--gold);
 }
 
 .action-btn.play {
@@ -720,8 +794,8 @@ body::before {
 }
 
 .action-btn.fav {
-    border-color: var(--green);
-    color: var(--green);
+    border-color: var(--teal);
+    color: var(--teal);
 }
 
 /* --- Empty State --- */

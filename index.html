@@ -104,8 +104,8 @@
             <!-- Swipe Card Stack -->
             <div class="swipe-container" id="swipe-container">
                 <div class="swipe-instructions" id="swipe-instructions">
-                    <div class="swipe-hint left">← Skip</div>
-                    <div class="swipe-hint right">Save →</div>
+                    <div class="swipe-hint left">←</div>
+                    <div class="swipe-hint right">→</div>
                 </div>
                 <div class="card-stack" id="card-stack">
                     <!-- Cards injected by JS -->
@@ -118,16 +118,25 @@
                 </div>
             </div>
 
+            <!-- Card Counter & Nav Info -->
+            <div class="swipe-nav-info" id="swipe-nav-info">
+                <div class="card-counter" id="card-counter">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span id="counter-text">1 of 3</span>
+                </div>
+                <div>← Previous · Tap ♡ to save · Next →</div>
+            </div>
+
             <!-- Swipe Action Buttons (mobile) -->
             <div class="swipe-actions" id="swipe-actions">
-                <button class="action-btn skip" id="btn-skip" aria-label="Skip">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                <button class="action-btn skip" id="btn-prev" aria-label="Previous imam">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
                 </button>
                 <button class="action-btn play" id="btn-play" aria-label="Play audio">
                     <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                 </button>
-                <button class="action-btn fav" id="btn-fav" aria-label="Save to favorites">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <button class="action-btn fav" id="btn-next" aria-label="Next imam">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
                 </button>
             </div>
         </section>
