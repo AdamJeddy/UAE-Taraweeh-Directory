@@ -2,88 +2,260 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Taraweeh Directory</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>UAE Taraweeh Directory — Ramadan 1447H</title>
     <link rel="stylesheet" href="styles.css">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 36 36%22><text y=%2232%22 font-size=%2232%22>🕌</text></svg>" type="image/svg+xml">
 
     <!-- Open Graph meta tags -->
-    <meta property="og:title" content="UAE Taraweeh Directory">
-    <meta property="og:description" content="Find Imams and their recitations during Ramadan 1446H in UAE.">
-    <meta property="og:image" content="https://img.freepik.com/free-vector/vector-abstract-geometric-islamic-background-based-ethnic-muslim-ornaments-intertwined-paper-stripes-elegant-background-cards-invitations-etc_1217-633.jpg">
+    <meta property="og:title" content="UAE Taraweeh Directory — Ramadan 2026">
+    <meta property="og:description" content="Discover Quran reciters across UAE mosques this Ramadan 1447H. Listen, explore, and find your Taraweeh.">
     <meta property="og:url" content="https://aetadilu.com">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="UAE Taraweeh Directory">
-
+    <meta name="theme-color" content="#1a0a2e">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <p>Find Imams and their recitations during Ramadan 1446H</p>
-        </header>
-        
-        <div class="intro">
-            <p>Assalamu Alaikum and Ramadan Kareem! </br> This community-driven resource helps you find Imams leading tarawih prayers across UAE. Listen to recitation samples and locate mosques on the map.</p>
+    <!-- ===== Top Navigation Bar ===== -->
+    <nav class="nav-bar">
+        <div class="nav-brand">
+            <span class="nav-icon">☪</span>
+            <span class="nav-title">Taraweeh UAE</span>
         </div>
-        
-        <h2>Mosque Locations</h2>
-        <div class="map-container">
-            <div id="map"></div>
+        <div class="nav-actions">
+            <button class="nav-btn" id="lang-toggle" aria-label="Switch language">
+                <span class="lang-text" id="lang-text">ع</span>
+            </button>
+            <button class="nav-btn" id="favorites-toggle" aria-label="View favorites">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+                <span class="fav-count" id="fav-count">0</span>
+            </button>
+            <button class="nav-btn" id="theme-toggle" aria-label="Toggle dark mode">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+            </button>
         </div>
-        
-        <h2>Featured Imams</h2>
-        <div class="imams-container" id="imams-list">
-            <!-- Imam cards will be dynamically added here -->
-        </div>
-        
-        <h2>Imam Directory</h2>
-        <div class="filter-container">
-            <div class="filter-group">
-                <label for="city-filter">Filter by City:</label>
-                <select id="city-filter">
-                    <option value="">All Cities</option>
-                </select>
+    </nav>
+
+    <!-- ===== Hero Section ===== -->
+    <section class="hero" id="hero">
+        <div class="hero-bg-pattern"></div>
+        <div class="hero-content">
+            <h1>Ramadan Kareem</h1>
+            <p class="hero-subtitle">Discover Quran reciters across UAE mosques</p>
+            <div class="countdown-container" id="countdown">
+                <div class="countdown-label" id="countdown-label">Ramadan 1447H begins in</div>
+                <div class="countdown-timer">
+                    <div class="countdown-unit">
+                        <span class="countdown-num" id="cd-days">--</span>
+                        <span class="countdown-text">Days</span>
+                    </div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-unit">
+                        <span class="countdown-num" id="cd-hours">--</span>
+                        <span class="countdown-text">Hours</span>
+                    </div>
+                    <div class="countdown-sep">:</div>
+                    <div class="countdown-unit">
+                        <span class="countdown-num" id="cd-mins">--</span>
+                        <span class="countdown-text">Mins</span>
+                    </div>
+                </div>
             </div>
-            <div class="filter-group">
-                <label for="area-filter">Filter by Area:</label>
-                <select id="area-filter">
-                    <option value="">All Areas</option>
-                </select>
-            </div>
-            <div class="filter-group">
-                <label for="date-filter">Filter by Date:</label>
-                <input type="number" id="date-filter" placeholder="Enter day of Ramadan">
-            </div>
+            <button class="hero-cta" id="start-discover">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                Discover Imams
+            </button>
         </div>
-        <table id="imams-table">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Mosque</th>
-                    <th>Location</th>
-                    <th>Recitation Days</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Imam rows will be dynamically added here -->
-            </tbody>
-        </table>
-        
-        <h2>Contribute</h2>
-        <div class="contribute-section">
-            <p>Help us expand this resource by contributing information about Imams and their tarawih locations.</p>
-            <p>Please reach out to us at <a href="mailto:dev.adamj@gmail.com">dev.adamj@gmail.com</a> with any information you would like to share. Alternatively, you can fill out our Google Form: <a href="https://forms.gle/jReWReoKQyH9W3HF8">forms.gle/jReWReoKQyH9W3HF8</a></p>
-            <p>You can also contribute to the project by visiting our GitHub repository: <a href="https://github.com/AdamJeddy/UAE-Taraweeh-Directory">github.com/AdamJeddy/UAE-Taraweeh-Directory</a></p>
-        </div>
-        
-        <footer>
-            <p>2025 Dubai Tarawih Imam Tracker | Ramadan 1446H</p>
-            <p>This is a community-driven project to help Muslims find beautiful recitations during the blessed month.</p>
-        </footer>
+    </section>
+
+    <!-- ===== Tab Navigation ===== -->
+    <div class="tab-bar" id="tab-bar">
+        <button class="tab active" data-tab="discover">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <span>Discover</span>
+        </button>
+        <button class="tab" data-tab="directory">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+            <span>Directory</span>
+        </button>
+        <button class="tab" data-tab="stats">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <span>Mosques</span>
+        </button>
     </div>
 
-    <!-- Load Google Maps JavaScript API -->
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBIT-giWmuKqDerRZAgcKPf5AoEswyKoxE&callback=initMap&libraries=&v=weekly" defer></script>
+    <!-- ===== Main Content Area ===== -->
+    <main class="main-content">
+
+        <!-- ===== DISCOVER TAB: Swipeable Cards ===== -->
+        <section class="tab-content active" id="tab-discover">
+            <div class="discover-header">
+                <h2>Discover Imams</h2>
+                <div class="discover-controls">
+                    <button class="pill-btn" id="location-toggle">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                        Nearest
+                    </button>
+                    <div class="filter-pills" id="filter-pills">
+                        <button class="pill-btn active" data-filter="all">All</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Swipe Card Stack -->
+            <div class="swipe-container" id="swipe-container">
+                <div class="swipe-instructions" id="swipe-instructions">
+                    <div class="swipe-hint left">←</div>
+                    <div class="swipe-hint right">→</div>
+                </div>
+                <div class="card-stack" id="card-stack">
+                    <!-- Cards injected by JS -->
+                </div>
+                <div class="empty-state" id="empty-state" style="display:none;">
+                    <div class="empty-icon">🕌</div>
+                    <h3>No more imams to discover</h3>
+                    <p>Check back later or reset your filters</p>
+                    <button class="pill-btn" id="reset-discover">Reset</button>
+                </div>
+            </div>
+
+            <!-- Card Counter & Nav Info -->
+            <div class="swipe-nav-info" id="swipe-nav-info">
+                <div class="card-counter" id="card-counter">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+                    <span id="counter-text">1 of 3</span>
+                </div>
+                <div>← Previous · Tap ♡ to save · Next →</div>
+            </div>
+
+            <!-- Swipe Action Buttons (mobile) -->
+            <div class="swipe-actions" id="swipe-actions">
+                <button class="action-btn skip" id="btn-prev" aria-label="Previous imam">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+                </button>
+                <button class="action-btn play" id="btn-play" aria-label="Play audio">
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                </button>
+                <button class="action-btn fav" id="btn-next" aria-label="Next imam">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+                </button>
+            </div>
+        </section>
+
+        <!-- ===== DIRECTORY TAB: Searchable List ===== -->
+        <section class="tab-content" id="tab-directory">
+            <div class="directory-header">
+                <h2>Imam Directory</h2>
+                <div class="search-bar">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <input type="text" id="search-input" placeholder="Search imam or mosque...">
+                </div>
+                <div class="filter-row">
+                    <select id="city-filter" class="filter-select">
+                        <option value="">All Cities</option>
+                    </select>
+                    <select id="style-filter" class="filter-select">
+                        <option value="">All Styles</option>
+                    </select>
+                    <select id="type-filter" class="filter-select">
+                        <option value="">All Types</option>
+                    </select>
+                </div>
+            </div>
+            <div class="directory-list" id="directory-list">
+                <!-- List items injected by JS -->
+            </div>
+        </section>
+
+        <!-- ===== STATS/MOSQUES TAB ===== -->
+        <section class="tab-content" id="tab-stats">
+            <div class="stats-header">
+                <h2>Coverage</h2>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-num" id="stat-mosques">0</div>
+                    <div class="stat-label">Mosques</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="stat-imams">0</div>
+                    <div class="stat-label">Imams</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="stat-cities">0</div>
+                    <div class="stat-label">Cities</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-num" id="stat-audio">0</div>
+                    <div class="stat-label">Recordings</div>
+                </div>
+            </div>
+            <div class="city-breakdown" id="city-breakdown">
+                <!-- City cards injected by JS -->
+            </div>
+            <div class="contribute-card">
+                <div class="contribute-icon">🤲</div>
+                <h3>Know an imam reciting this Ramadan?</h3>
+                <p>Help our community grow by sharing imam and mosque information.</p>
+                <a href="https://forms.gle/jReWReoKQyH9W3HF8" target="_blank" class="contribute-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                    Submit an Imam
+                </a>
+                <p class="contribute-alt">or email <a href="mailto:dev.adamj@gmail.com">dev.adamj@gmail.com</a></p>
+            </div>
+        </section>
+
+        <!-- ===== FAVORITES PANEL ===== -->
+        <section class="favorites-panel" id="favorites-panel">
+            <div class="favorites-header">
+                <h2>My Favorites</h2>
+                <button class="close-btn" id="close-favorites" aria-label="Close favorites">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="favorites-list" id="favorites-list">
+                <div class="empty-state" id="empty-favorites">
+                    <div class="empty-icon">💛</div>
+                    <h3>No favorites yet</h3>
+                    <p>Swipe right on imams you like to save them here</p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ===== Audio Player Bar (Bottom) ===== -->
+    <div class="audio-bar" id="audio-bar" style="display:none;">
+        <div class="audio-progress" id="audio-progress-bar">
+            <div class="audio-progress-fill" id="audio-progress-fill"></div>
+        </div>
+        <div class="audio-bar-content">
+            <div class="audio-info">
+                <div class="audio-title" id="audio-title">—</div>
+                <div class="audio-mosque" id="audio-mosque">—</div>
+            </div>
+            <div class="audio-controls">
+                <button class="audio-btn" id="audio-rewind" aria-label="Rewind 15s">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/><text x="12" y="16" text-anchor="middle" font-size="8" fill="currentColor" stroke="none">15</text></svg>
+                </button>
+                <button class="audio-btn play-pause" id="audio-play-pause" aria-label="Play/Pause">
+                    <svg class="icon-play" width="24" height="24" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+                    <svg class="icon-pause" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" style="display:none"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
+                </button>
+                <button class="audio-btn" id="audio-forward" aria-label="Forward 15s">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/><text x="12" y="16" text-anchor="middle" font-size="8" fill="currentColor" stroke="none">15</text></svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hidden audio element -->
+    <audio id="global-audio" preload="none"></audio>
+
+    <!-- Toast notification -->
+    <div class="toast" id="toast"></div>
+
     <script src="script.js"></script>
 </body>
 </html>
