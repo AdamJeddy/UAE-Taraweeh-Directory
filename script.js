@@ -139,7 +139,7 @@ function t(key) {
 }
 
 // ===== Ramadan 2026 (1447H) dates in UAE timezone =====
-const RAMADAN_START = new Date('2026-02-16T00:00:00+04:00'); // approximate
+const RAMADAN_START = new Date('2026-02-18T00:00:00+04:00'); // approximate
 const RAMADAN_END   = new Date('2026-03-18T23:59:59+04:00');
 
 // ──────────────────────────────────────
